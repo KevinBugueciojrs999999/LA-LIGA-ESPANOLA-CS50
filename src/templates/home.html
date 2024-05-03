@@ -1,0 +1,198 @@
+{% extends './base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css')}}">
+{% endblock %}
+
+
+
+{% block body %}
+{% include "./elements/navbar.html" %}
+
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col teams_nav">
+            <tr>
+                {% for team in laliga_teams %}
+                <td> <a href="{{ url_for('teams', team_name = team['team_tla']) }}"><img src="{{ team['team_crest'] }}"
+                            class="navbar_team_crest my-4 mx-2" alt="{{ team['team_shortname'] }} crest"></a>
+                </td>
+                {% endfor %}
+            </tr>
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-3 mb-5">
+    <h1>LaLiga</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link">Jornada</a>
+                        </li>
+                        <li class="page-item">
+                            <form class="btn-group" method="POST">
+                                {% for jornada in range(38) %}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button id="jornada" type="submit" class="btn btn-dark" value="{{jornada + 1}}"
+                                    name="boton_jornada">{{
+                                    jornada + 1 }}</button>
+                                </button>
+                                {% endfor %}
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Jornada {{ laliga_matches[0]['matchday_number'] }} de 38</h1>
+
+        <div class="row mx-auto">
+            <table class="table mx-auto">
+                <tbody>
+                    {% if laliga_matches[0]['matchday_number'] == 34 %}
+                    <tr>
+                        <th scope="row" class="align-baseline text-center"><img
+                                src="../static/img/juventud_unida_team_crest.png" class="match_team_crest_example"
+                                alt=""></th>
+                        <th scope="row" class="align-baseline text-center">Asociación Juventud Unida</th>
+                        <th scope="row" class="align-baseline text-center">-</th>
+                        <th scope="row" class="align-baseline text-center">:</th>
+                        <th scope="row" class="align-baseline text-center">-</th>
+                        <th scope="row" class="align-baseline text-center"><img
+                                src="../static/img/almirantes_team_crest.png" class="match_team_crest_example" alt="">
+                        </th>
+                        <th scope="row" class="align-baseline text-center">Almirantes CF</th>
+                        <th scope="row" class="align-baseline text-center">Viernes 03/05 18:00</th>
+
+                        <th scope="row">
+                            <img src="../static/img/red_background.jpg" alt="" class="match-status-symbol">
+                        </th>
+                        <th scope="row">
+                            <p> Cancelado/Pospuesto</p>
+                        </th>
+                    </tr>
+                    {% endif %}
+                    {% for match in laliga_matches %}
+                    <tr>
+                        <th scope="row" class="align-baseline text-center"><img src="{{ match['home_team_crest'] }}"
+                                class="match_team_crest" alt=""></th>
+                        <th scope="row" class="align-baseline text-center">{{ match['home_team_name'] }}</th>
+                        <th scope="row" class="align-baseline text-center">{{ match['home_score'] }}</th>
+                        <th scope="row" class="align-baseline text-center">:</th>
+                        <th scope="row" class="align-baseline text-center">{{ match['away_score'] }}</th>
+                        <th scope="row" class="align-baseline text-center"><img src="{{ match['away_team_crest'] }}"
+                                class="match_team_crest" alt=""></th>
+                        <th scope="row" class="align-baseline text-center">{{ match['away_team_name'] }}</th>
+                        <th scope="row" class="align-baseline text-center">{{ match['date'] }}</th>
+                        {% if match['status'] in ["SCHEDULED", "TIMED"] %}
+                        <th scope="row">
+                            <img src="../static/img/yellow_background.jpg" alt="match-status-{{ match['status'] }}"
+                                class="match-status-symbol">
+                        </th>
+                        <th scope="row">
+                            <p> Programado</p>
+                        </th>
+                        {% elif match['status'] in ["IN_PLAY", "PAUSED"] %}
+                        <th scope="row">
+                            <img src="../static/img/green_background.jpg" alt="match-status-{{ match['status'] }}"
+                                class="match-status-symbol spinner-grow text-success" role="status">
+                        </th>
+                        <th scope="row">
+                            <p> En juego</p>
+                        </th>
+                        {% elif match['status'] in ["FINISHED", "AWARDED"] %}
+                        <th scope="row">
+                            <img src="../static/img/blue_background.jpg" alt="match-status-{{ match['status'] }}"
+                                class="match-status-symbol">
+                        </th>
+                        <th scope="row">
+                            <p> Finalizado</p>
+                        </th>
+                        {% else %}
+                        <th scope="row">
+                            <img src="../static/img/red_background.jpg" alt="match-status-{{ match['status'] }}"
+                                class="match-status-symbol">
+                        </th>
+                        <th scope="row">
+                            <p> Cancelado/Pospuesto</p>
+                        </th>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col mx-auto p-2">
+            <h2>Tabla de posiciones</h2>
+            <table class="table mx-auto">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"></th>
+                        <th scope="col">Club</th>
+                        <th scope="col">PJ</th>
+                        <th scope="col">G</th>
+                        <th scope="col">E</th>
+                        <th scope="col">P</th>
+                        <th scope="col">GF</th>
+                        <th scope="col">GC</th>
+                        <th scope="col">DG</th>
+                        <th scope="col">PTS</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for standing in laliga_standings %}
+                    <tr>
+                        <th scope="row">{{ standing['position'] }}
+                        </th>
+                        <th scope="row"><img src="{{ standing['team_crest'] }}" class="match_team_crest" alt="">
+                        </th>
+                        <th scope="row">{{ standing['team_name'] }}
+                        </th>
+                        <th scope="row">{{ standing['playedGames'] }}
+                        </th>
+                        <th scope="row">{{ standing['won'] }}
+                        </th>
+                        <th scope="row">{{ standing['draw'] }}
+                        </th>
+                        <th scope="row">{{ standing['lost'] }}
+                        </th>
+                        <th scope="row">{{ standing['goalsFor'] }}
+                        </th>
+                        <th scope="row">{{ standing['goalsAgainst']
+                            }}
+                        </th>
+                        <th scope="row">{{ standing['goalDifference']
+                            }}
+                        </th>
+                        <th scope="row">{{ standing['points'] }}
+                        </th>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% include "./elements/footer.html" %}
+{% endblock %}
+

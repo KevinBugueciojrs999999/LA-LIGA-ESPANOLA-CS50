@@ -1,0 +1,16 @@
+#footer {
+    background-color: #303434;
+    width: 100%;
+    height: 3.5rem;
+    position: absolute;
+    bottom: 0;
+}
+
+.footer-content {
+    height: 3.5rem;
+}
+
+p.footer-text {
+    color: #ff4a42;
+}
+

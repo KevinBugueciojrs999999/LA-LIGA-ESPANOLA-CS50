@@ -1,0 +1,52 @@
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css')}}">
+{% endblock %}
+
+<div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary px-5 " data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('home' )}}">
+                <img src="../static/img/laligalogo.png" alt="Bootstrap" width="70" height="55">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto d-none d-lg-flex"> <!-- Mostrar solo en dispositivos grandes -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <img class="user-profile-pic" src="../static/img/perfil-del-usuario.png"
+                                alt="user-profile-pic">
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <span class="dropdown-item navbar-text disabled">
+                                    {{ current_user.username }}
+                                </span>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url_for('user_profile') }}">Mi perfil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav d-lg-none"> <!-- Mostrar solo en dispositivos pequeños -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mi perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Mis equipos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Salir</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>

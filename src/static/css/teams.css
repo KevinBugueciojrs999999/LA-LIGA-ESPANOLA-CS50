@@ -1,0 +1,19 @@
+button.like_button img {
+	height: 2rem;
+	width: 2rem;
+}
+
+button.like_button img:hover {
+		content: url(../img/like-full.png);
+
+}
+
+img.team_crest {
+	height: 10rem;
+	width: auto;
+}
+
+img.competition-emblem {
+	height: 6rem;
+	width: auto;
+}

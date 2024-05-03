@@ -1,0 +1,39 @@
+{% extends './base.html' %}
+
+{% block title %}Perfil{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_profile.css')}}">
+{% endblock %}
+
+{% block body %}
+{% include "./elements/navbar.html" %}
+
+<div id="container text-center" class="main mt-5">
+    <h1>{{ current_user.fullname }}</h1>
+    <h3>Tus equipos favoritos</h3>
+    <div class="my-5 row">
+        <div class="col-3"></div>
+        {% if not favorite_teams %}
+        <h5>No tienes equipos favoritos agregados</h5>
+        {% else %}
+        {% for team in favorite_teams %}
+        <div class="col mx-3">
+            <a href="{{ url_for('teams', team_name = team['team_tla']) }}"><img src="{{ team['team_crest'] }}"
+                    class="team_crest my-4 mx-2" alt="{{ team['team_shortname'] }} crest"></a>
+            <h5>{{ team['team_name'] }}</h5>
+            <form class="alling" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button id="favorito" type="submit" class="btn d-inline align-bottom" value="{{ team['team_id'] }}"
+                    name="boton_favorito">
+                    <img class="like_button" src="../static/img/like-full.png">
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="col-3"></div>
+    </div>
+</div>
+{% include "./elements/footer.html" %}
+{% endblock %}

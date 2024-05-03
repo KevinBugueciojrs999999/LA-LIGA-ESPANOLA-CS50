@@ -1,0 +1,8 @@
+.user-profile-pic {
+	width: 3rem;
+	height: 3rem;
+}
+
+.user-profile-pic:hover {
+	content: url(../img/perfil-del-usuario-hover.png);
+}

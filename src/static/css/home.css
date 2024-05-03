@@ -1,0 +1,39 @@
+.teams_nav {
+    background-color: white;
+}
+
+.navbar_team_crest {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.match_team_crest {
+	width: 2rem;
+    width: 2rem;
+}
+
+.match_team_crest_example {
+	width: 3rem;
+    width: 3rem;
+}
+
+.teams_nav img.navbar_team_crest:hover {
+    opacity: 1;
+    animation: flash 1.5s;
+}
+
+.match-status-symbol {
+	width: 1rem;
+    height: 1rem;
+	border-radius: 50%;
+}
+
+
+@keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}

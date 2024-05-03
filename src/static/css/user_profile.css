@@ -1,0 +1,9 @@
+a img.team_crest {
+    height: 10rem;
+    width: 10rem;
+}
+
+#favorito .like_button {
+    width: 2rem;
+    height: 2rem;
+}

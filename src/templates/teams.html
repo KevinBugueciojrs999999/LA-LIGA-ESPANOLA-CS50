@@ -1,0 +1,131 @@
+{% extends './base.html' %}
+
+{% block title %}{{ clicked_team_data['team_shortname']}}{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/teams.css')}}">
+{% endblock %}
+
+{% block body %}
+{% include "./elements/navbar.html" %}
+
+<div id="content-wrap" class="main mt-5">
+    <div class="row">
+        <div class="col md-4"></div>
+        <div class="col md-4">
+            <div class="row justify-content-center align-items-center g-2">
+                <div class="col">
+                    <img class="team_crest" src="{{ clicked_team_data['team_crest'] }}"
+                        alt="{{ clicked_team_data['team_name'] }} crest">
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Estructura del equipo con botón de favorito -->
+                            <h1 class="d-inline align-middle">{{ clicked_team_data['team_name' ]}}</h1>
+                            <form class="alling" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button id="favorito" type="submit" class="btn d-inline like_button align-bottom">
+                                    <!-- Icono de corazón como imagen -->
+                                    {% if is_favorite_team %}
+                                    <img src="../static/img/like-full.png">
+                                    {% else %}
+                                    <img src="../static/img/like-empty.png">
+                                    {% endif %}
+
+                                </button>
+                            </form>
+                            {% with messages = get_flashed_messages() %}
+
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-primary alert-dismissible" role="alert">
+                                <strong>{{ message }}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <h5>{{ clicked_team_data['stadium_name'] }}</h5>
+                    <h5>{{ team_city }}</h5>
+                    <h5>Fundación: {{ clicked_team_data['team_found_date'] }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col md-4"></div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            <h2 class="mb-5">Datos del club</h2>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="col">
+                    <div class="row">
+                        <h3>Plantilla</h3>
+                    </div>
+                </div>
+                <div class="row mx-auto p-2">
+                    <table class="table table-light table-bordered mx-auto align-baseline text-center">
+                        <thead>
+                            <tr class="table-danger">
+                                <th scope="col">Posición</th>
+                                <th scope="col">Nombre del jugador</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            {% for player in clicked_team_data['squad_data'] %}
+                            <tr>
+                                {% if player['position'] == "Goalkeeper" %}
+                                <th scope="row">Portero</th>
+                                {% elif player['position'] == "Defence" %}
+                                <th scope="row">Defensa</th>
+                                {% elif player['position'] == "Midfield" %}
+                                <th scope="row">Centrocampista</th>
+                                {% elif player['position'] == "Offence" %}
+                                <th scope="row">Delantero</th>
+                                {% endif %}
+                                <th scope="row">{{ player['name'] }}</th>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <table class="table table-light table-bordered mx-auto align-baseline text-center">
+                        <thead>
+                            <tr class="table-danger">
+                                <th scope="col">Entrenador</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <tr>
+                                <th scope="row">{{ clicked_team_data['coach']}}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="col">
+                <h3 class="mb-3">Competiciones durante esta temporada</h3>
+                <table class="table table-light table-bordered mx-auto align-baseline text-center">
+                    <tbody>
+                        {% for competition in clicked_team_data['competitions'] %}
+                        <tr>
+                            <th scope="row"> <img class="competition-emblem" src="{{ competition['emblem'] }}"
+                                    alt="emblema de la competición">
+                            </th>
+                            <th scope="row">{{ competition['name'] }}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "./elements/footer.html" %}
+{% endblock %}
